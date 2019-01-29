@@ -50,10 +50,8 @@ var distanceTestsMaxDist = []struct {
 
 func TestDistance(t *testing.T) {
 
-	lev := &Context{}
-
 	for index, distanceTest := range distanceTests {
-		result := lev.Distance([]rune(distanceTest.first), []rune(distanceTest.second), 100)
+		result := LevDistance([]rune(distanceTest.first), []rune(distanceTest.second), 100)
 		if result != distanceTest.wanted {
 			output := fmt.Sprintf("%v \t distance of %v and %v should be %v but was %v.",
 				index, distanceTest.first, distanceTest.second, distanceTest.wanted, result)
@@ -61,7 +59,7 @@ func TestDistance(t *testing.T) {
 		}
 	}
 	for index, distanceTest := range distanceTestsMaxDist {
-		result := lev.Distance([]rune(distanceTest.first), []rune(distanceTest.second), distanceTest.maxDist)
+		result := LevDistance([]rune(distanceTest.first), []rune(distanceTest.second), distanceTest.maxDist)
 		if result != distanceTest.wanted {
 			output := fmt.Sprintf("maxdist: %v \t distance of %v and %v should be %v but was %v.",
 				index, distanceTest.first, distanceTest.second, distanceTest.wanted, result)
@@ -78,10 +76,8 @@ func BenchmarkDistance(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 
-	c := &Context{}
-
 	for i := 0; i < b.N; i++ {
-		total += c.Distance([]rune(s1), []rune(s2), 100)
+		total += LevDistance([]rune(s1), []rune(s2), 100)
 	}
 
 	if total == 0 {
