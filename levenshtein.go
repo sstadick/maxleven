@@ -1,22 +1,22 @@
 package maxleven
 
 // Context provides a reusable int slice
-// type Context struct {
-// 	intSlice []int
-// }
+type Context struct {
+	intSlice []int
+}
 
-// func (c *Context) getIntSlice(l int) []int {
-// 	if cap(c.intSlice) < l {
-// 		c.intSlice = make([]int, l)
-// 	}
-// 	return c.intSlice[:l]
-// }
+func (c *Context) getIntSlice(l int) []int {
+	if cap(c.intSlice) < l {
+		c.intSlice = make([]int, l)
+	}
+	return c.intSlice[:l]
+}
 
 // Distance is a wrapper for calling the distance function with the context struct
-// func Distance(s1, s2 []rune, maxDist int) int {
-// 	c := Context{}
-// 	return c.Distance(s1, s2, maxDist)
-// }
+func LevDistance(s1, s2 []rune, maxDist int) int {
+	c := Context{}
+	return c.Distance(s1, s2, maxDist)
+}
 
 // LevDistance between two strings is defined as the minimum
 // number of edits needed to transform one string into the other, with the
@@ -28,7 +28,7 @@ package maxleven
 // It is based on the optimized C version found here:
 // http://en.wikibooks.org/wiki/Algorithm_implementation/Strings/Levenshtein_distance#C
 // This version is modified to return early if maxDist is exceeded, the dist returned will be -1
-func LevDistance(s1, s2 []rune, maxDist int) int {
+func (c *Context) Distance(s1, s2 []rune, maxDist int) int {
 
 	lenS1 := len(s1)
 	lenS2 := len(s2)
@@ -39,8 +39,8 @@ func LevDistance(s1, s2 []rune, maxDist int) int {
 		}
 		return -1
 	}
-
-	column := make([]int, lenS1+1)
+	column := c.getIntSlice(lenS1 + 1)
+	// column := make([]int, lenS1+1)
 	// Column[0] will be initialised at the start of the first loop before it
 	// is read, unless lenS2 is zero, which we deal with above
 	for i := 1; i <= lenS1; i++ {
